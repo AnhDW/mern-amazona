@@ -21,6 +21,6 @@
   "homepage": "https://github.com/AnhDW/mern-amazona#readme",
   "engines": {
     "npm": "8.15.0",
-    "node": "16.17.0"
+    "node": "16.16.0"
   }
 }
