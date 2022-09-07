@@ -6,8 +6,7 @@
   "scripts": {
     "build": "cd backend && npm install && cd ../frontend && npm install -f && npm run build -f",
     "start": "node backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,9 +17,5 @@
   "bugs": {
     "url": "https://github.com/AnhDW/mern-amazona/issues"
   },
-  "homepage": "https://github.com/AnhDW/mern-amazona#readme",
-  "engines": {
-    "npm": "8.15.0",
-    "node": "16.16.0"
-  }
+  "homepage": "https://github.com/AnhDW/mern-amazona#readme"
 }
