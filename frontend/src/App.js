@@ -5,8 +5,7 @@ import SigninScreen from './screen/SigninScreen';
 import SignupScreen from './screen/SignupScreen';
 import CartScreen from './screen/CartScreen';
 import ShippingAddressScreen from './screen/ShippingAddressScreen';
-import NavBar from 'react-bootstrap/NavBar';
-import { Nav, Badge, Container, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, Badge, Container, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { Store } from './Store';
@@ -33,15 +32,15 @@ function App() {
       <div className="d-flex flex-column site-container">
         <ToastContainer position="bottom-center" limit={1}/>
         <header>
-          <NavBar bg="dark" variant="dark" expand="lg">
+          <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
               <LinkContainer to="/">
-                <NavBar.Brand>
+                <Navbar.Brand>
                   amazona
-                </NavBar.Brand>
+                </Navbar.Brand>
               </LinkContainer>
-              <NavBar.Toggle aria-controls='basic-navbar-nav' />
-              <NavBar.Collapse id="basic-navbar-nav">
+              <Navbar.Toggle aria-controls='basic-navbar-nav' />
+              <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto w-100 justify-content-end">
                 <Link to="/cart" className="nav-link">
                   Cart
@@ -67,9 +66,9 @@ function App() {
                   ):(<Link className="nav-link" to="/signin">Sign in</Link>)
                 }
               </Nav>
-              </NavBar.Collapse>
+              </Navbar.Collapse>
             </Container>
-          </NavBar>
+          </Navbar>
 
         </header>
         <main>
