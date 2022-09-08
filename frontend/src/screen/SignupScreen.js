@@ -2,7 +2,7 @@ import { Container, Button} from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Axios from "axios"
+import axios from "axios"
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Store } from "../Store";
@@ -28,7 +28,7 @@ export default function SignupScreen (){
             return;
         }
         try {
-            const {data} = await Axios.post('/api/users/signup', {
+            const {data} = await axios.post('/api/users/signup', {
                 name,email,password,
             });
             ctxDispatch({type: 'USER_SIGNIN', payload: data});

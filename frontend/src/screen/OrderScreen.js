@@ -4,7 +4,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import Axios from "axios";
+import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import { Card, Col, Row } from "react-bootstrap";
 import { ListGroup } from "react-bootstrap";
@@ -69,7 +69,7 @@ export default function OrderScreen () {
         return actions.order.capture().then(async function (details) {
             try {
                 dispatch({type: 'PAY_REQUEST'})
-                const {data} = await Axios.put(`/api/orders/${order._id}/pay`, 
+                const {data} = await axios.put(`/api/orders/${order._id}/pay`, 
                 details, 
                 {headers: {authorization:`Bearer ${userInfo.token}`}})
 
@@ -90,7 +90,7 @@ export default function OrderScreen () {
         const fetchOrder = async () => { 
             try {
                 dispatch({ type: 'FETCH_REQUEST'});
-                const {data} = await Axios.get(`/api/orders/${orderId}`,
+                const {data} = await axios.get(`/api/orders/${orderId}`,
                 {
                     headers: { authorization: `Bearer ${userInfo.token}`},
                 });
@@ -109,7 +109,7 @@ export default function OrderScreen () {
             }
         } else {
             const loadingPaypalScript = async() => {
-                const {data: clientId} = await Axios.get('/api/keys/paypal', {
+                const {data: clientId} = await axios.get('/api/keys/paypal', {
                     headers: { authorization: `Bearer ${userInfo.token}`},
                 });
                 paypalDispatch({
