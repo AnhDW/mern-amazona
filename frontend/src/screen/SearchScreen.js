@@ -4,10 +4,13 @@ import {Link, useNavigate, useLocation } from 'react-router-dom';
 import { getError } from '../utils';
 import { toast } from 'react-toastify'
 import { Helmet } from "react-helmet-async";
-import {Row, Col} from "react-bootstrap";
+import {Row, Col, Button} from "react-bootstrap";
 import Rating from "../components/Rating";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import Product from "../components/Product";
+import {LinkContainer} from 'react-router-bootstrap';
+
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -65,23 +68,26 @@ export default function SearchScreen () {
     const navigate = useNavigate();
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
-    const category = sp.get('category'||'all');
-    const query = sp.get('query'||'all');
-    const price = sp.get('price'||'all');
-    const rating = sp.get('rating'||'all');
-    const order = sp.get('order'||'newest');
-    const page = sp.get('page'||'1');
+    const category = sp.get('category')||'all';
+    const query = sp.get('query')||'all';
+    const price = sp.get('price')||'all';
+    const rating = sp.get('rating')||'all';
+    const order = sp.get('order')||'newest';
+    const page = sp.get('page')||1;
 
-    const [{ loading, error, product, pages, countProducts }, dispatch] = useReducer(reducer,{
-        loading: true,
-        error: ''
-    })
-
+    const [{ loading, error, products, pages, countProducts }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
+    
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                // const { data } = await axios.get(`/api/products/search?page${page}&query=${query}&catelogy=${category}&price=${price}&rating=${rating}&order=${order}`);
-                // dispatch({ type: 'FETCH_SUCCESS', payload: data });
+                const { data } = await axios.get(
+                    `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+                );
+                dispatch({ type: 'FETCH_SUCCESS', payload: data });
             }catch(err){
                 dispatch({ type: 'FETCH_FAIL', payload:getError(err)});
             }
@@ -93,8 +99,8 @@ export default function SearchScreen () {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                // const {data} = await axios.get(`/api/products/categories`);
-                // setCategories(data);
+                const {data} = await axios.get(`/api/products/categories`);
+                setCategories(data);
             }catch (err) {
                 toast.error(getError(err))
             }
@@ -113,7 +119,7 @@ export default function SearchScreen () {
     }
 
     return(
-        <div>
+        <div >
             <Helmet><title>Search Products</title></Helmet>
             <Row>
                 <Col md={3}>
@@ -187,7 +193,60 @@ export default function SearchScreen () {
                     {loading ? (<LoadingBox />
                     ):error ? (<MessageBox variant="danger">{error}</MessageBox>
                     ):(
-                       <></> 
+                       <>
+                            <Row className="justify-content-between mb-3">
+                                <Col md={6}>
+                                    <div>
+                                        {countProducts === 0 ? 'No':countProducts} Results
+                                        {query !== 'all' && ' : ' + query}
+                                        {category !== 'all' && ' : ' + category}
+                                        {price !== 'all' && ' : Price ' + price}
+                                        {rating !== 'all' && ' : Rating ' + rating + ' & up'}
+                                        {query !== 'all' || category !== 'all' || rating !== 'all' ? (
+                                        <Button
+                                            variant="light"
+                                            onClick={()=> navigate('/search')}
+                                        >
+                                            <i className="fas fa-times-circle"></i>
+                                        </Button>):null}
+                                    </div>
+                                </Col>
+                                <Col className="text-end">
+                                    Sort by{' '}
+                                    <select
+                                        value={order}
+                                        onChange={(e)=> {navigate(getFilterUrl({order: e.target.value}))}}
+                                    >
+                                        <option value="newest">Newest Arrivals</option>
+                                        <option value="lowest">Price: Low to High</option>
+                                        <option value="hightest">Price: High to Low</option>
+                                        <option value="toprated">Avg. Customer Reviews</option>
+                                    </select>
+                                </Col>
+                            </Row>
+                            {products.length === 0 && (<MessageBox>No Products Found</MessageBox>)}
+                            <Row>
+                                {products.map(product =>(
+                                    <Col md={6} lg={4} className="mb-3" key={product._id}>
+                                        <Product product={product}></Product>
+                                    </Col>
+                                ))}
+                            </Row>
+
+                            <div>
+                                {[...Array(pages).keys()].map((x)=>(
+                                    <LinkContainer
+                                        key={x+1}
+                                        className="mx-1"
+                                        to={getFilterUrl({page:x+1})}
+                                    >
+                                        <Button className={Number(page)=== x+1 ? 'text-bold':''} variant="light">
+                                            {x + 1}
+                                        </Button>
+                                    </LinkContainer>
+                                ))}
+                            </div>
+                       </> 
                     )}
                 </Col>
             </Row>

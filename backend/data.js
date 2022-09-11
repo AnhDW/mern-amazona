@@ -64,7 +64,7 @@ const data = {
           price: 65,
           countInStock: 5,
           brand: 'Puma',
-          rating: 4.5,
+          rating: 3.5,
           numReviews: 10,
           description: 'high quality product',
         },
