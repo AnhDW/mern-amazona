@@ -7,6 +7,7 @@ productRouter.get('/', async (req, res) => {
     const products = await Product.find()
     res.send(products)
 })
+
 const PAGE_SIZE = 3;
 productRouter.get('/search', expressAsyncHandler(async (req, res) => {
     const {query} = req
@@ -73,6 +74,7 @@ productRouter.get('/search', expressAsyncHandler(async (req, res) => {
         pages: Math.ceil(countProducts / pageSize)
     });
 }))
+
 productRouter.get('/categories', expressAsyncHandler(async (req, res) => {
     const categories = await Product.find().distinct('category');
     res.send(categories)
@@ -99,4 +101,5 @@ productRouter.get('/:id', async (req, res) => {
     }
 
 })
+
 export default productRouter;
